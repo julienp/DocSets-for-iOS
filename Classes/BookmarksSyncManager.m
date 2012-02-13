@@ -31,8 +31,6 @@
 	self = [super init];
 	if (self) {
 		_queue = [[NSMutableArray alloc] init];
-		_restClient = [[DBRestClient alloc] initWithSession:[DBSession sharedSession]];
-		_restClient.delegate = self;
 	}
 	return self;
 }
@@ -45,6 +43,15 @@
 		sharedBookmarksSyncManager = [[self alloc] init];
 	});
 	return sharedBookmarksSyncManager;
+}
+
+- (DBRestClient *)restClient
+{
+	if (!_restClient && [[DBSession sharedSession] isLinked]) {
+		_restClient = [[DBRestClient alloc] initWithSession:[DBSession sharedSession]];
+		_restClient.delegate = self;
+	}
+	return _restClient;
 }
 
 - (void)sync
