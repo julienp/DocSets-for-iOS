@@ -6,6 +6,7 @@
 //  Copyright 2010 omz:software. All rights reserved.
 //
 
+#import <DropboxSDK/DropboxSDK.h>
 #import "DocSetsAppDelegate.h"
 #import "RootViewController.h"
 #import "DetailViewController.h"
@@ -28,6 +29,9 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions 
 {
+	DBSession *dbSession = [[DBSession alloc] initWithAppKey:@"okcb25i46b7j732" appSecret:@"h87lklxu19t329a" root:kDBRootAppFolder];
+	[DBSession setSharedSession:dbSession];
+
 	self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
 	
 	[DocSetDownloadManager sharedDownloadManager];
@@ -132,6 +136,18 @@
 			[vc openURL:currentURL withAnchor:nil];
 		}
 	}
+}
+
+- (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url
+{
+	NSLog(@"handleURL %@", url);
+	if ([[DBSession sharedSession] handleOpenURL:url]) {
+		if ([[DBSession sharedSession] isLinked]) {
+			NSLog(@"App linked successfully!");
+		}
+		return YES;
+	}
+	return NO;
 }
 
 @end

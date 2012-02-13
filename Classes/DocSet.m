@@ -48,6 +48,12 @@
 	return bookmarks;
 }
 
+- (void)refreshBookmarks
+{
+	bookmarks = nil; //force re-reading the Bookmarks.plist on next access
+	[[NSNotificationCenter defaultCenter] postNotificationName:DocSetBookmarksUpdatedNotification object:self];
+}
+
 - (void)saveBookmarks
 {
 	NSString *bookmarksPath = [path stringByAppendingPathComponent:@"Bookmarks.plist"];

@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 
 #define DocSetWillBeDeletedNotification		@"DocSetWillBeDeletedNotification"
+#define DocSetBookmarksUpdatedNotification	@"DocSetBookmarksUpdatedNotification"
 
 #define kNodeSectionNodes					@"nodes"
 #define kNodeSectionTitle					@"title"
@@ -44,6 +45,7 @@ typedef void(^DocSetSearchCompletionHandler)(NSString *searchTerm, NSArray *resu
 - (NSArray *)nodeSectionsForRootNode:(NSManagedObject *)rootNode;
 - (BOOL)nodeIsExpandable:(NSManagedObject *)node;
 - (void)saveBookmarks;
+- (void)refreshBookmarks;
 - (void)prepareSearch;
 - (void)searchForNodesMatching:(NSString *)searchTerm completion:(DocSetSearchCompletionHandler)completion;
 - (void)searchForTokensMatching:(NSString *)searchTerm completion:(DocSetSearchCompletionHandler)completion;

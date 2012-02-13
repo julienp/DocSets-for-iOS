@@ -6,6 +6,7 @@
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
+#import "BookmarksSyncManager.h"
 #import "BookmarksViewController.h"
 #import "DetailViewController.h"
 #import "DocSet.h"
@@ -25,7 +26,9 @@
 		} else {
 			self.contentSizeForViewInPopover = CGSizeMake(320, 480);
 			self.navigationItem.rightBarButtonItem = [self editButtonItem];
+			self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(sync:)];
 		}
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadBookmarks:) name:DocSetBookmarksUpdatedNotification object:nil];
 		docSet = selectedDocSet;
 	}
 	return self;
@@ -47,6 +50,16 @@
 - (void)done:(id)sender
 {
 	[self dismissModalViewControllerAnimated:YES];
+}
+
+- (void)sync:(id)sender
+{
+	[[BookmarksSyncManager sharedBookmarksSyncManager] sync];
+}
+
+- (void)reloadBookmarks:(NSNotification *)notification
+{
+	[self.tableView reloadData];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
