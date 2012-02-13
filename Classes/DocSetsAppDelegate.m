@@ -140,11 +140,7 @@
 
 - (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url
 {
-	NSLog(@"handleURL %@", url);
 	if ([[DBSession sharedSession] handleOpenURL:url]) {
-		if ([[DBSession sharedSession] isLinked]) {
-			NSLog(@"App linked successfully!");
-		}
 		return YES;
 	}
 	return NO;

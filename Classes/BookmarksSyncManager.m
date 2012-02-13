@@ -105,10 +105,8 @@
 					NSDate *localModificationDate = [attrs objectForKey:NSFileModificationDate];
 					NSDate *remoteModificationDate = file.lastModifiedDate;
 					if ([localModificationDate compare:remoteModificationDate] == NSOrderedDescending) {
-						NSLog(@"uploading");
 						[self.restClient uploadFile:filename toPath:@"/" withParentRev:file.rev fromPath:bookmarksPath];
 					} else if ([localModificationDate compare:remoteModificationDate] == NSOrderedAscending) {
-						NSLog(@"downloading");
 						[self.restClient loadFile:[@"/" stringByAppendingString:filename] intoPath:bookmarksPath];
 					} else {
 						//same modification date, do nothing
@@ -123,7 +121,6 @@
 		}
 		if (!found) {
 			//bookmarks.plist doesn't exist on dropbox yet
-			NSLog(@"uploading");
 			[self.restClient uploadFile:filename toPath:@"/" withParentRev:nil fromPath:bookmarksPath];
 		}
 	}
