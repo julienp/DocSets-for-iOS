@@ -369,7 +369,20 @@
 
 - (void)showBookmark:(NSDictionary *)bookmark
 {
-	[self openURL:[NSURL URLWithString:[bookmark objectForKey:@"URL"]] withAnchor:nil];
+	// synchronized bookmarks from other devices have a different path,
+	// change the path to match the app's sandbox
+	NSString *url = [bookmark objectForKey:@"URL"];
+	NSRange range = [url rangeOfString:[self.docSet.path lastPathComponent]];
+	url = [url substringFromIndex:range.location + range.length];
+	url = [[self.docSet.path stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding] stringByAppendingPathComponent:url];
+	// point to uncached version
+	if ([url hasSuffix:@"__cached__.html"]) {
+		url = [url stringByReplacingOccurrencesOfString:@"__cached__.html" withString:@".html"];
+	}
+
+	//TODO: anchors?
+
+	[self openURL:[NSURL URLWithString:url] withAnchor:nil];
 	if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
 		[bookmarksPopover dismissPopoverAnimated:YES];
 	} else {
