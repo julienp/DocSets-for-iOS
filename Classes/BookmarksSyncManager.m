@@ -113,8 +113,7 @@
 						[self syncFinished];
 					}
 				} else {
-					//exists remote only, leave it there and do nothing;
-					[self syncFinished];
+					[self.restClient loadFile:[@"/" stringByAppendingString:filename] intoPath:bookmarksPath];
 				}
 				break;
 			}
