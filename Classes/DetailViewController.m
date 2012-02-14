@@ -371,18 +371,28 @@
 {
 	// synchronized bookmarks from other devices have a different path,
 	// change the path to match the app's sandbox
-	NSString *url = [bookmark objectForKey:@"URL"];
-	NSRange range = [url rangeOfString:[self.docSet.path lastPathComponent]];
-	url = [url substringFromIndex:range.location + range.length];
-	url = [[self.docSet.path stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding] stringByAppendingPathComponent:url];
-	// point to uncached version
-	if ([url hasSuffix:@"__cached__.html"]) {
-		url = [url stringByReplacingOccurrencesOfString:@"__cached__.html" withString:@".html"];
+	NSString *URL = [bookmark objectForKey:@"URL"];
+	NSRange pathRange = [URL rangeOfString:[self.docSet.path lastPathComponent]];
+	URL = [URL substringFromIndex:pathRange.location + pathRange.length];
+	URL = [self.docSet.path stringByAppendingString:URL];
+	// split off the anchor
+	NSString *URLAnchor = nil;
+	NSInteger anchorLocation = [URL rangeOfString:@"#"].location;
+	if (anchorLocation != NSNotFound) {
+		URLAnchor = [URL substringFromIndex:anchorLocation + 1]; // don't include '#'
+		URL = [URL substringToIndex:anchorLocation];
 	}
+	// point to uncached version if we don't have the cached version
+	if ([URL rangeOfString:@"__cached__.html"].location != NSNotFound) {
+		NSFileManager *fm = [NSFileManager defaultManager];
+		if (![fm fileExistsAtPath:URL]) {
+			URL = [URL stringByReplacingOccurrencesOfString:@"__cached__.html" withString:@".html"];
+		}
+	}
+	URL = [@"file://" stringByAppendingString:URL];
+	URL = [URL stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
 
-	//TODO: anchors?
-
-	[self openURL:[NSURL URLWithString:url] withAnchor:nil];
+	[self openURL:[NSURL URLWithString:URL] withAnchor:URLAnchor];
 	if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
 		[bookmarksPopover dismissPopoverAnimated:YES];
 	} else {
