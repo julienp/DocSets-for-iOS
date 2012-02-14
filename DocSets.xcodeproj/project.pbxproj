@@ -108,6 +108,7 @@
 		F99A2D4B14E9CFBB00DD6BF1 /* DropboxSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F99A2D4A14E9CFBB00DD6BF1 /* DropboxSDK.framework */; };
 		F9CF35E414E96683007A0879 /* BookmarksSyncManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F9CF35E314E96683007A0879 /* BookmarksSyncManager.m */; };
 		F9CF35ED14E96C09007A0879 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F9CF35EC14E96C09007A0879 /* Security.framework */; };
+		F9F73DCE14EAB4BB00C76910 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = F9F73DCD14EAB4BB00C76910 /* Settings.bundle */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -251,6 +252,7 @@
 		F9CF35E214E96683007A0879 /* BookmarksSyncManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BookmarksSyncManager.h; sourceTree = "<group>"; };
 		F9CF35E314E96683007A0879 /* BookmarksSyncManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BookmarksSyncManager.m; sourceTree = "<group>"; };
 		F9CF35EC14E96C09007A0879 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		F9F73DCD14EAB4BB00C76910 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = Settings.bundle; path = Resources/Settings.bundle; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -324,6 +326,7 @@
 				7F1D42C614D1627D00A85CB3 /* AvailableDocSets.plist */,
 				7F1D42CA14D1629100A85CB3 /* docSet.mom */,
 				7FCAE4C212B70FC500F529FF /* Images */,
+				F9F73DCD14EAB4BB00C76910 /* Settings.bundle */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -662,6 +665,7 @@
 				5D892D8B14D73C5A005B3273 /* Cancel-Pressed@2x.png in Resources */,
 				5D892D8C14D73C5A005B3273 /* Cancel.png in Resources */,
 				5D892D8D14D73C5A005B3273 /* Cancel@2x.png in Resources */,
+				F9F73DCE14EAB4BB00C76910 /* Settings.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -66,6 +66,7 @@
 			[self.queue addObject:docSet];
 		}
 	}
+
 	[self startNextSync];
 }
 

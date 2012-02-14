@@ -29,9 +29,6 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions 
 {
-	DBSession *dbSession = [[DBSession alloc] initWithAppKey:@"okcb25i46b7j732" appSecret:@"h87lklxu19t329a" root:kDBRootAppFolder];
-	[DBSession setSharedSession:dbSession];
-
 	self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
 	
 	[DocSetDownloadManager sharedDownloadManager];
@@ -50,8 +47,27 @@
 	[self.window makeKeyAndVisible];
 	
 	[self restoreInterfaceState];
+
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(defaultsChanged:) name:NSUserDefaultsDidChangeNotification object:nil];
+	DBSession *dbSession = [[DBSession alloc] initWithAppKey:@"okcb25i46b7j732" appSecret:@"h87lklxu19t329a" root:kDBRootAppFolder];
+	[DBSession setSharedSession:dbSession];
 	
     return YES;
+}
+
+- (void)defaultsChanged:(NSNotification *)notification
+{
+	DBSession *dbSession = [DBSession sharedSession];
+
+	if ([[NSUserDefaults standardUserDefaults] boolForKey:@"sync_enabled"]) {
+		if (![dbSession isLinked]) {
+			[dbSession link];
+		}
+	} else {
+		if ([dbSession isLinked]) {
+			[dbSession unlinkAll];
+		}
+	}
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application
