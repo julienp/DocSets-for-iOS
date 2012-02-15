@@ -26,9 +26,6 @@
 		} else {
 			self.contentSizeForViewInPopover = CGSizeMake(320, 480);
 			self.navigationItem.rightBarButtonItem = [self editButtonItem];
-			if ([[NSUserDefaults standardUserDefaults] boolForKey:@"sync_enabled"]) {
-				self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(sync:)];
-			}
 		}
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadBookmarks:) name:DocSetBookmarksUpdatedNotification object:nil];
 		docSet = selectedDocSet;
@@ -52,11 +49,6 @@
 - (void)done:(id)sender
 {
 	[self dismissModalViewControllerAnimated:YES];
-}
-
-- (void)sync:(id)sender
-{
-	[[BookmarksSyncManager sharedBookmarksSyncManager] sync];
 }
 
 - (void)reloadBookmarks:(NSNotification *)notification
