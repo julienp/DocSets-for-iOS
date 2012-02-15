@@ -58,6 +58,7 @@
 {
 	NSString *bookmarksPath = [path stringByAppendingPathComponent:@"Bookmarks.plist"];
 	[[self bookmarks] writeToFile:bookmarksPath atomically:YES];
+	[[NSNotificationCenter defaultCenter] postNotificationName:DocSetBookmarksSavedNotification object:self];
 }
 
 - (void)prepareSearch

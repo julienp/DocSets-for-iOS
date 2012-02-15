@@ -14,6 +14,9 @@
 #import "DocSetViewController.h"
 #import "DocSet.h"
 #import "DocSetDownloadManager.h"
+#import "BookmarksSyncManager.h"
+
+#define sync_enabled_preference		@"sync_enabled"
 
 @interface DocSetsAppDelegate ()
 
@@ -48,10 +51,14 @@
 	
 	[self restoreInterfaceState];
 
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(defaultsChanged:) name:NSUserDefaultsDidChangeNotification object:nil];
 	DBSession *dbSession = [[DBSession alloc] initWithAppKey:@"okcb25i46b7j732" appSecret:@"h87lklxu19t329a" root:kDBRootAppFolder];
 	[DBSession setSharedSession:dbSession];
-	
+	if ([dbSession isLinked]) {
+		[[BookmarksSyncManager sharedBookmarksSyncManager] sync];
+	}
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(defaultsChanged:) name:NSUserDefaultsDidChangeNotification object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(bookmarksSaved:) name:DocSetBookmarksSavedNotification object:nil];
+
     return YES;
 }
 
@@ -59,7 +66,7 @@
 {
 	DBSession *dbSession = [DBSession sharedSession];
 
-	if ([[NSUserDefaults standardUserDefaults] boolForKey:@"sync_enabled"]) {
+	if ([[NSUserDefaults standardUserDefaults] boolForKey:sync_enabled_preference]) {
 		if (![dbSession isLinked]) {
 			[dbSession link];
 		}
@@ -67,6 +74,13 @@
 		if ([dbSession isLinked]) {
 			[dbSession unlinkAll];
 		}
+	}
+}
+
+- (void)bookmarksSaved:(NSNotification *)notification
+{
+	if ([[NSUserDefaults standardUserDefaults] boolForKey:sync_enabled_preference]) {
+		[[BookmarksSyncManager sharedBookmarksSyncManager] sync];
 	}
 }
 

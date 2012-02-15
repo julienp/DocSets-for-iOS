@@ -10,6 +10,7 @@
 
 #define DocSetWillBeDeletedNotification		@"DocSetWillBeDeletedNotification"
 #define DocSetBookmarksUpdatedNotification	@"DocSetBookmarksUpdatedNotification"
+#define DocSetBookmarksSavedNotification	@"DocSetBookmarksSavedNotification"
 
 #define kNodeSectionNodes					@"nodes"
 #define kNodeSectionTitle					@"title"
