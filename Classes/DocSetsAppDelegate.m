@@ -53,9 +53,6 @@
 
 	DBSession *dbSession = [[DBSession alloc] initWithAppKey:@"okcb25i46b7j732" appSecret:@"h87lklxu19t329a" root:kDBRootAppFolder];
 	[DBSession setSharedSession:dbSession];
-	if ([dbSession isLinked]) {
-		[[BookmarksSyncManager sharedBookmarksSyncManager] sync];
-	}
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(defaultsChanged:) name:NSUserDefaultsDidChangeNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(bookmarksSaved:) name:DocSetBookmarksSavedNotification object:nil];
 
@@ -87,6 +84,13 @@
 - (void)applicationDidEnterBackground:(UIApplication *)application
 {
 	[self saveInterfaceState];
+}
+
+- (void)applicationDidBecomeActive:(UIApplication *)application
+{
+	if ([[NSUserDefaults standardUserDefaults] boolForKey:sync_enabled_preference]) {
+		[[BookmarksSyncManager sharedBookmarksSyncManager] sync];
+	}
 }
 
 - (void)saveInterfaceState
