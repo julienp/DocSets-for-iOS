@@ -171,6 +171,7 @@
 - (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url
 {
 	if ([[DBSession sharedSession] handleOpenURL:url]) {
+		[[BookmarksSyncManager sharedBookmarksSyncManager] sync];
 		return YES;
 	}
 	return NO;
