@@ -18,7 +18,7 @@
 
 #define sync_enabled_preference		@"sync_enabled"
 
-@interface DocSetsAppDelegate ()
+@interface DocSetsAppDelegate () <DBSessionDelegate>
 
 - (void)saveInterfaceState;
 - (void)restoreInterfaceState;
@@ -52,6 +52,7 @@
 	[self restoreInterfaceState];
 
 	DBSession *dbSession = [[DBSession alloc] initWithAppKey:@"okcb25i46b7j732" appSecret:@"h87lklxu19t329a" root:kDBRootAppFolder];
+	dbSession.delegate = self;
 	[DBSession setSharedSession:dbSession];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(defaultsChanged:) name:NSUserDefaultsDidChangeNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(bookmarksSaved:) name:DocSetBookmarksSavedNotification object:nil];
@@ -79,6 +80,12 @@
 	if ([[NSUserDefaults standardUserDefaults] boolForKey:sync_enabled_preference]) {
 		[[BookmarksSyncManager sharedBookmarksSyncManager] sync];
 	}
+}
+
+- (void)sessionDidReceiveAuthorizationFailure:(DBSession *)session userId:(NSString *)userId
+{
+	[session unlinkAll];
+	[session link];
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application
