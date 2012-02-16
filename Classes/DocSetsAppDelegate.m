@@ -16,8 +16,6 @@
 #import "DocSetDownloadManager.h"
 #import "BookmarksSyncManager.h"
 
-#define sync_enabled_preference		@"sync_enabled"
-
 @interface DocSetsAppDelegate () <DBSessionDelegate>
 
 - (void)saveInterfaceState;

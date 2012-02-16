@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+#define sync_enabled_preference		@"sync_enabled"
+
 @interface BookmarksSyncManager : NSObject
 
 + (BookmarksSyncManager *)sharedBookmarksSyncManager;

@@ -59,15 +59,17 @@
 	if ([self.queue count] > 0) return; //already synching
 
 	if (![[DBSession sharedSession] isLinked]) {
-		[[DBSession sharedSession] link];
+		if ([[NSUserDefaults standardUserDefaults] boolForKey:sync_enabled_preference]) {
+			[[DBSession sharedSession] link];
+			//handleOpenURL: will start a new sync
+		}
 	} else {
 		NSArray *docSets = [[DocSetDownloadManager sharedDownloadManager] downloadedDocSets];
 		for (DocSet *docSet in docSets) {
 			[self.queue addObject:docSet];
 		}
+		[self startNextSync];
 	}
-
-	[self startNextSync];
 }
 
 - (void)syncFinished
